@@ -8,34 +8,35 @@ void printHelp();
 int main(int argc, char *argv[])
 {
 
-  /* Check command line arguments for help option or bad syntax */
-  if(argc >= 2)
-  {
-
-    if(strcmp(argv[1], "-h") == 0) 
-    {
-      printHelp();
-    }
-
-  }
-  else if(argc != 3)
+  /* Check command line arguments for bad syntax and
+   * help, slash (s), or slash star (ss) switches. */
+  if(argc == 1 || argc > 3 )
   {
     printUsage();
   }
+  else if(strcmp(argv[1], "-h") == 0) 
+  {
+    printHelp();
+  }
+  else if(strcmp(argv[1], "-s") == 0) 
+  {
+    /* Change all comments to slash only (inline) style */ 
 
-  /* Check switch for slash (s) or slash star (ss) */
-  
-
-
-
-
- 
+  }
+  else if(strcmp(argv[1], "-ss") == 0) 
+  {
+    /* Change all comments to slash star (block) style, */
+  }
+  else
+  {
+    printUsage();
+  }
 
   return 0;
 
 }
 
-/* Print command line format */
+/* Print command line argument format and hint */
 void printUsage()
 {
   printf("Usage ./slashstar -[switch] -[filename]\n");
@@ -45,13 +46,9 @@ void printUsage()
 /* Print help menu */
 void printHelp()
 {
-  printf("    *** Usage ***\n");
-  printf("./slashstar -[switch] -[filename]\n");
-  printf("\n    *** Switches ***\n");
+  printf("    *** Switches ***\n");
   printf("-h        Show help menu\n");
   printf("-s        Slash comments only /* */ -->   //\n");
   printf("-ss       Slash star comments  //   --> /* */\n");
-  printf("\n    *** Example ***\n");
+  printf("    *** Example ***\n");
 }
-  
-
