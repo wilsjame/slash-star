@@ -62,10 +62,20 @@ void printHelp()
 /* Change all comments to slash only (inline) style */ 
 int slash(FILE *fp, char *fileName)
 {
+
+  /* Open file pointer for reading data */
   fp = fopen(fileName, "r");
 
+  /* Create output file name with the pid */
+  char outputName[421]; 
+  char pid[10];
+  memset(outputName, '\0', sizeof(outputName));
+  memset(pid, '\0', sizeof(pid));
+  strcat(outputName, fileName);
+  snprintf(pid, 10, "%d", (int)(getpid()));
+  strcat(outputName, pid);
+
   //todo:
-  //create output file with unique pid
   //use fgetc to write characters to output file
   //if the char sequence matches "/*" do stuff
   
