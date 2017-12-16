@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
   else if(strcmp(argv[1], "-s") == 0) 
   {
     /* Change all comments to slash only (inline) style */ 
+    slash(fp, argv[2]);
 
   }
   else if(strcmp(argv[1], "-ss") == 0) 
@@ -63,8 +64,17 @@ void printHelp()
 int slash(FILE *fp, char *fileName)
 {
 
+  /* Create temp variable to store the return value of fgetc() */
+  int someCharacter;
+
   /* Open file pointer for reading data */
   fp = fopen(fileName, "r");
+
+  if( fp == NULL)
+  {
+    perror("Error opening file");
+    return -1;
+  }
 
   /* Create output file name with the pid */
   char outputName[421]; 
@@ -74,6 +84,28 @@ int slash(FILE *fp, char *fileName)
   strcat(outputName, fileName);
   snprintf(pid, 10, "%d", (int)(getpid()));
   strcat(outputName, pid);
+
+  /* Read a character at a time from the file stream */
+  do
+  {
+    someCharacter = fgetc(fp);
+
+    /* Leave loop at end of file */
+    if(feof(fp))
+    {
+      break;
+    }
+
+    /* Check for slash star comments */
+    if(someCharacter == '/')
+    {
+      /* peek */
+    }
+    printf("%c", someCharacter);
+
+
+  }while(1);
+
 
   //todo:
   //use fgetc to write characters to output file
