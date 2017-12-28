@@ -14,8 +14,8 @@ int main(int argc, char *argv[])
   /* Create a pointer to a file stream. */
   FILE *fp;
 
-  /* Check command line arguments for bad syntax and
-   * help, slash (s), or slash star (ss) switches. */
+  /* Check command line arguments for bad syntax or
+   * switch: help (h), slash (s), slash star (ss) */
   if(argc == 1 || argc > 3 )
   {
     printUsage();
@@ -26,13 +26,15 @@ int main(int argc, char *argv[])
   }
   else if(strcmp(argv[1], "-s") == 0) 
   {
+
     /* Change all comments to slash only (inline) style */ 
     slash(fp, argv[2]);
 
   }
   else if(strcmp(argv[1], "-ss") == 0) 
   {
-    /* Change all comments to slash star (block) style, */
+
+    /* Change all comments to slash star (block) style */
   }
   else
   {
@@ -46,8 +48,8 @@ int main(int argc, char *argv[])
 /* Print command line argument format and hint */
 void printUsage()
 {
-  printf("Usage ./slashstar -[switch] -[filename]\n");
-  printf("Try   ./slashstar -h\n");
+  printf("Usage ./slash-star -[switch] -[filename]\n");
+  printf("Try   ./slash-star -h\n");
 }
 
 /* Print help menu */
@@ -65,7 +67,7 @@ int slash(FILE *fp, char *fileName)
 {
 
   /* Create temp variable to store the return value of fgetc() */
-  int someCharacter;
+  int ch;
 
   /* Open file pointer for reading data */
   fp = fopen(fileName, "r");
@@ -88,7 +90,7 @@ int slash(FILE *fp, char *fileName)
   /* Read a character at a time from the file stream */
   do
   {
-    someCharacter = fgetc(fp);
+    ch = fgetc(fp);
 
     /* Leave loop at end of file */
     if(feof(fp))
@@ -96,16 +98,30 @@ int slash(FILE *fp, char *fileName)
       break;
     }
 
-    /* Check for slash star comments */
-    if(someCharacter == '/')
-    {
-      /* peek */
-    }
-    printf("%c", someCharacter);
+    printf("%c", ch);
 
+    /* Check for slash star comments */
+    if(ch == '/')
+    {
+      ch = fgetc(fp);
+
+      /* Check if a star follows the slash. Reset pointer otherwise  */
+      if(ch == '*')
+      {
+
+        /* Found a block comment */
+        ch = '/';
+        printf("%c", ch);
+      }
+      else
+      {
+        fseek(fp, -2, SEEK_CUR);
+        ch = fgetc(fp);
+      }
+
+    }
 
   }while(1);
-
 
   //todo:
   //use fgetc to write characters to output file
